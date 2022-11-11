@@ -1,0 +1,6 @@
+__pycache__/
+*.db
+.DS_Store
+thumb.db
+.ipynb_checkpoints/
+50scaff2Break.json*
