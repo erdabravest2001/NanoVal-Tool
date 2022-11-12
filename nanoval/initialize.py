@@ -1,10 +1,10 @@
 import json
 from pathlib import Path
 
-class Analyzer:
-    def __init__(self, design_file:Path) -> None:
-        self.path = design_file
-        self.design_content = self.open_caDNAno_json(design_file)
+class Initializer:
+    def __init__(self, design_filepath:Path) -> None:
+        self.path = design_filepath
+        self.design_content = self.open_caDNAno_json(design_filepath)
         self.make_staple_color_uniform()
         print("Initialization Completed")
         with open(self.path, 'w') as new:
