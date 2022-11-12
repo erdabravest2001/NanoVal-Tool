@@ -1,5 +1,5 @@
 # caDNAno Design Validation Tool
-
+**Note**: Curently this tool is run from the terminal/cmd, but the eventual goal of this project will implement a GUI, also providing more informatics such as suggested thermal annealing ramp, basic staple stand statistics etc. 
 ## Prerequisites
 This documentation assumes basic knowledge of caDNAno2, and DNA origami concepts including thermodynamics, structure, design etc.   
 Users should be familiar with the caDNAno2 interface and the representations of staple/scaffold strands.
@@ -10,7 +10,7 @@ caDNAno is a very popular tool for computer-aided DNA origami design. This proje
 ## Usage  
 ### Dependencies  
 ```
-numpy
+numpy >= 1.23.0
 ```  
 ### Workflow
 After users have a design file exported from caDNAno2, users can analyze their designs for staple strands which may be potentially problematic to the formation of the structure <i>in vitro</i>. These strands are explained in the <a href = "#bg">Background</a> section below.   
