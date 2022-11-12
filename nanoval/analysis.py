@@ -191,7 +191,7 @@ class Analyzer(Initializer):
                 helix_color[1] = int(to_color, 16)
     
     def summary(self):
-        output_name = f"{self.design_content['name']}_summary.txt"
+        output_name = f"{self.path.stem}_summary.txt"
         output_path = self.path.parent / output_name
         today = date.today()
         now = datetime.now()
@@ -201,7 +201,7 @@ class Analyzer(Initializer):
         with open(output_path, 'w') as summary_txt:
             summary_txt.write("caDNAno Design Analysis Summary:\n")
             summary_txt.write(f"Filename: {self.design_content['name']}")
-            summary_txt.write(f"Analysis Date: {today_str}\t")
+            summary_txt.write(f"\tAnalysis Date: {today_str}\t")
             summary_txt.write(f"Analysis Time: {current_time}\n\n")
 
             summary_txt.write("Detected sandwich strands: \n")
