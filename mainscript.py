@@ -17,6 +17,7 @@ def mainscript_fx():
         analyzer = Analyzer(design_filepath)
     
     analyzer.construct_all_staples()
+    analyzer.visualize_vulnerabilities('all')
     analyzer.summary()
     end_stamp = time.time()
     print(f"Analysis completed in {end_stamp - start_stamp} seconds.")
