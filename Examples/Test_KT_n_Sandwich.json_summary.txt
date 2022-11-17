@@ -1,9 +1,0 @@
-caDNAno Design Analysis Summary:
-Filename: Test_KT_n_Sandwich.jsonAnalysis Date: October 09, 2022	Analysis Time: 15:33:13
-
-Detected sandwich strands: 
-	4[34]
-Detected kinetic traps: 
-	0[21]
-	1[20]
-	3[27]
