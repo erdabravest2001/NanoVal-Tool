@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 import numpy as np
-from initialize import Initializer
+from nanoval.initialize import Initializer
 from datetime import datetime, date
 import sys
 import tkinter as tk
@@ -15,6 +15,7 @@ class Analyzer(Initializer):
         self.insufficient_bind_len_addresses = []
         self.staple_master_list = self.construct_all_staples()
     
+    # -------------------- Staple Node Linking Methods -------------------- # 
     def get_start_nodes(self) -> np.array:
         fiveprime_terminis = np.array([[0, 1, 2, 3]], dtype = 'uint8')
         for vHelix in self.design_content['vstrands']:
@@ -25,6 +26,9 @@ class Analyzer(Initializer):
         return list(fiveprime_terminis[1:])
 
     def tracelink_staple_nodes(self, node:list, node_list:list[list] = None, reverse:bool = False) -> list[list]:
+        '''
+        Recursively link the nodes (nucleotides) together by finding the next node one by one.
+        '''
         completed_staple = [list(node)] if node_list == None else node_list
         five_p_helix, five_p_index, three_p_helix, three_p_index = node
         if reverse == False:
@@ -62,6 +66,10 @@ class Analyzer(Initializer):
         return linked_nodes
     
     def construct_all_staples(self) -> list:
+        '''
+        Runs the actual analysis all at once while constructing staples
+        '''
+        print("Analysis start")
         staples = []
         sandwich_strands = []
         kinetic_traps = []
@@ -70,8 +78,8 @@ class Analyzer(Initializer):
         for fiveprime_terminus in fiveprime_termini:
             staple = self.tracelink_staple_nodes(fiveprime_terminus)
             is_sandwich = self.check_sandwich(staple)
-            is_kinetic_trap = self.check_kinetic_trap(staple, 3)
-            is_insufficient_bindlen = self.bind_domain_len(staple, 5)
+            is_kinetic_trap = self.check_kinetic_trap(staple, 4)
+            is_insufficient_bindlen = self.bind_domain_len(staple, 4)
             staples.append(staple)
             sandwich_strands.append(is_sandwich)
             kinetic_traps.append(is_kinetic_trap)
@@ -82,6 +90,7 @@ class Analyzer(Initializer):
 
         return complete_staples
 
+    # -------------------- Sandwich Strand Analysis Methods -------------------- #
     def check_sandwich(self, split_staple:list) -> bool:
         lengths = [len(fragment) for fragment in split_staple]
         current_max_length = 0
@@ -97,12 +106,13 @@ class Analyzer(Initializer):
                 if length <= current_min_length:
                     current_min_length = length
                 else:
-                    node_index = split_staple[0][0][3] + 1 if split_staple[0][0][2] % 2 == 1 else split_staple[0][0][3] - 1
-                    print(f"Sandwich Strand: {split_staple[0][0][2]}[{node_index}]")
+                    node_index = split_staple[0][0][3] + 1 if split_staple[0][0][2] % 2 == 0 else split_staple[0][0][3] - 1
+                    print(f"Sandwich Strand detected @ {split_staple[0][0][2]}[{node_index}]")
                     self.sandwich_addresses.append(f"{split_staple[0][0][2]}[{node_index}]")
                     return True
         return False
-                    
+
+    # -------------------- Kinetic Trap Strand Analysis Methods -------------------- #                
     def check_kinetic_trap(self, staple_strand_nodes:list[list], scan_size:int) -> bool: 
         xover_nodes = []
         for fragment in staple_strand_nodes:
@@ -124,31 +134,33 @@ class Analyzer(Initializer):
         for helix_num in helix_nums:
             node_index = three_p_index 
 
-            for i in range(scan_size):
+            for i in range(scan_size+1):
                 helix = vstrand_map[helix_num]['scaf']
                 upstream_node = helix[node_index - i]
                 downstream_node = helix[node_index + i]
                 if upstream_node[0] != upstream_node[2]:
-                    print(f"Kinetic Trap: {helix_num}[{node_index}]")
+                    print(f"Kinetic Trap detected @ {helix_num}[{node_index}]")
                     self.kinetic_trap_addresses.append(f"{helix_num}[{node_index}]")
                     return True
                 if downstream_node[0] != downstream_node[2]:
-                    print(f"Kinetic Trap: {helix_num}[{node_index}]")
+                    print(f"Kinetic Trap detected @ {helix_num}[{node_index}]")
                     self.kinetic_trap_addresses.append(f"{helix_num}[{node_index}]")
                     return True
         return False
     
-    def bind_domain_len(self, staple_nodes_split:list, minimum_binding_domain_len:int = 5):
+    # -------------------- Check staple binding domain length method -------------------- #
+    def bind_domain_len(self, staple_nodes_split:list, minimum_binding_domain_len:int = 4):
         binding_domain_lens = np.array([len(fragment) for fragment in staple_nodes_split])
-        sufficient_binding = binding_domain_lens <= minimum_binding_domain_len
+        sufficient_binding = np.uint8(binding_domain_lens <= minimum_binding_domain_len)
         if np.sum(sufficient_binding) >= 1:
-            node_index = staple_nodes_split[0][0][3] + 1 if staple_nodes_split[0][0][2] % 2 == 1 else staple_nodes_split[0][0][3] - 1
+            node_index = staple_nodes_split[0][0][3] + 1 if staple_nodes_split[0][0][2] % 2 == 0 else staple_nodes_split[0][0][3] - 1
             helix_num = staple_nodes_split[0][0][2]
             self.insufficient_bind_len_addresses.append(f"{helix_num}[{node_index}]")
-            return False
+            return True
         
-        return True
+        return False
 
+    # -------------------- Post-processing and summary methods -------------------- #
     def visualize_vulnerabilities(self, vulnerability_type:str) -> None:
         match vulnerability_type:
             case 'sandwich':
@@ -174,7 +186,7 @@ class Analyzer(Initializer):
             to_write.write(json.dumps(self.design_content))
         
         print("Potentially problematic strands have been colored red on caDNAno design file.")
-        print("Close the caDNAno program if it is open, and reload the json file to view those strands.")
+        print("Reload the json file to view those strands. Note not all red-colored strands need to be fixed.")
     
     def change_color(self, single_staple:list[list], to_color:str = 'AF2219'):
         '''
@@ -214,23 +226,3 @@ class Analyzer(Initializer):
             for short in self.insufficient_bind_len_addresses:
                 summary_txt.write(f"\t{short}\n")
 
-
-
-if __name__ == '__main__':
-    current_file = Path(__file__)
-    jsonf = current_file.parent.parent / 'DONA/Tests/Test_KT_n_Sandwich.json'
-    jsonf2 = current_file.parent.parent / 'DONA/Tests/50Scaff2Break.json'
-
-    try:
-        design_filepath = Path(sys.argv[1])
-    except IndexError:
-        design_filepath = fd.askopenfilename(title = "Select caDNAno design file to analyze")
-        design_filepath = Path(design_filepath)
-
-    constructor = Analyzer(design_filepath)
-
-    # Uniform color on initialization - passed
-    # Color bad strands - passed
-    constructor.construct_all_staples()
-    constructor.visualize_vulnerabilities('both')
-    constructor.summary()
