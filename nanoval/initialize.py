@@ -6,10 +6,9 @@ class Initializer:
         self.path = design_filepath
         self.design_content = self.open_caDNAno_json(design_filepath)
         self.make_staple_color_uniform()
-        print("Initialization Completed")
         with open(self.path, 'w') as new:
             new.write(json.dumps(self.design_content))
-
+   
     def open_caDNAno_json(self, design_file:Path) -> dict:
         with open(design_file, 'r') as designf_content:
             design_content = json.loads(designf_content.read())
@@ -21,7 +20,7 @@ class Initializer:
         
         return design_content
     
-    def make_staple_color_uniform(self):
+    def make_staple_color_uniform(self) -> None:
         vstrands = self.design_content['vstrands']
         for vHelix in vstrands:
             for colors in vHelix['stap_colors']:
