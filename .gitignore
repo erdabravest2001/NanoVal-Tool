@@ -3,4 +3,5 @@ __pycache__/
 .DS_Store
 thumb.db
 .ipynb_checkpoints/
-50scaff2Break.json*
+testscript.py 
+tempstat/Data/idt_api_credentials.json
