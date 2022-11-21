@@ -73,7 +73,7 @@ class StrandAnalyzer(StrandLinker):
             staple_seqs.append(f"{five_p_end_address['helix']}[{five_p_end_address['index']}],{staple_nucleotide_seq},{len(staple_nucleotide_seq)}")
         seqtable = self.format_staple_info(staple_seqs)
         end_stamp = time.time()
-        print(f"\nREPORT: --> Sequences inferred in {round(end_stamp - start_stamp, 5)}s")
+        print(f"\nREPORT: --> Sequences inferred in {round(end_stamp - start_stamp, 5)}s\n")
 
         return seqtable
     
