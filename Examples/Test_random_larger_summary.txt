@@ -1,5 +1,5 @@
 caDNAno Design Analysis - Strand Connectivity Analysis:
-Filename: Test_random_larger.json	Analysis Date: November 20, 2022	Analysis Time: 03:07:56
+Filename: Test_random_larger.json	Analysis Date: November 20, 2022	Analysis Time: 21:38:49
 
 Detected sandwich strands: 
 	2[95]
