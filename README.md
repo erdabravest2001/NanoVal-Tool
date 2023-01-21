@@ -1,5 +1,5 @@
 # caDNAno Design Validation Tool
-**Note**: Curently this tool is run from the terminal/cmd, but the eventual goal of this project will implement a GUI, also providing more informatics such as suggested thermal annealing ramp, basic staple stand statistics etc. 
+**Note**: Curently this tool is run from the terminal/cmd, but the eventual goal of this project will implement a GUI, also providing more informatics such as suggested thermal annealing ramp, basic staple stand statistics etc. Patent Pending.
 
 **README not updated yet**
 
