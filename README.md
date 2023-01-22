@@ -1,7 +1,12 @@
 # caDNAno Design Validation Tool
-**Note**: Curently this tool is run from the terminal/cmd, but the eventual goal of this project will implement a GUI, also providing more informatics such as suggested thermal annealing ramp, basic staple stand statistics etc. Patent Pending.
+**Note**: Curently this tool is run from the terminal/cmd, but the eventual goal of this project will implement a GUI, also providing more informatics such as suggested thermal annealing ramp, basic staple stand statistics etc. 
 
-**README not updated yet**
+
+Developers: 
+Fumi Inaba
+Ethan Elliot Rajkumar
+Qiyang Geng
+
 
 ## Prerequisites
 This documentation assumes basic knowledge of caDNAno2, and DNA origami concepts including thermodynamics, structure, design etc.   
@@ -40,7 +45,7 @@ username@ubuntu ~ $ python3 mainscript.py
 
 Once the analysis is complete, users can reopen the design file on caDNAno2, and will see that the problematic strands are colored red, while the others are colored green. The script also outputs a text file <i>name_of_design_file_summary</i>.txt, with the date and time of the analysis, along with the coordinates fo the problematic strands provided in the format <b>"helix_number[longitudinal_index]"</b>. Sample analyses files and results are available in the Examples folder.  
 
-Additionally, a histogram of the melting temperatures of staple strands in 1<sup>o</sup>C wide bins will be saved. 
+Additionally, a histogram of the melting temperatures of staple strands in 1<sup>o</sup>C wide bins will be saved. Finally, the 
 
 <div id = 'bg'>
 <h2>Background</h2>
@@ -48,3 +53,5 @@ DNA Origami nanostructures are formed typically using one long 'scaffold' DNA st
 <br><br>
 An important concept in the formation of DNA origami structures are 'cross overs'. This is when a single DNA strand in a double-stranded DNA (dsDNA) double helix crosses over from one dsDNA helix to another, resulting in one DNA strand being a part of two or more double helices. 
 </div>
+
+
