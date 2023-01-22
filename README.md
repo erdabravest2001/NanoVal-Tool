@@ -2,7 +2,7 @@
 **Note**: Curently this tool is run from the terminal/cmd, but the eventual goal of this project will implement a GUI, also providing more informatics such as suggested thermal annealing ramp, basic staple stand statistics etc. 
 
 
-Developers: 
+## Developers: 
 Fumi Inaba
 Ethan Elliot Rajkumar
 Qiyang Geng
